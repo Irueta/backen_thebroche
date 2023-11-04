@@ -1,0 +1,21 @@
+extends ../layout
+
+block content 
+    h1 Registro 
+    if error 
+        p(class="error")= error
+    form(action="/register", method="post") 
+        label(for="nombre") Nombre 
+        input(type="text", name="nombre", id="nombre")
+        label(for="primer_apellido") Primer apellido 
+        input(type="text", name="primer_apellido", id="primer_apellido")
+        label(for="segundo_apellido") Segundo apellido 
+        input(type="text", name="segundo_apellido", id="segundo_apellido")
+        label(for="email") Email 
+        input(type="text", name="email", id="email") 
+        label(for="password") Contraseña
+        input(type="password", name="password", id="password") 
+        label(for="passwordConfirm") Repetir contraseña 
+        input(type="password", name="passwordConfirm", id="passwordConfirm") 
+        input(type="submit", value="send")
+        

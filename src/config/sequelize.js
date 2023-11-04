@@ -1,4 +1,4 @@
-import {Sequelize, Model, DataType} from "sequelize";
+import {Sequelize, Model, DataTypes} from "sequelize";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -19,7 +19,6 @@ const sequelize = new Sequelize(
     
 );
 
-class usuarios extends Model{}
 
 
 /* async function prueba(){
@@ -34,4 +33,3 @@ class usuarios extends Model{}
 prueba(); */
 
 export default sequelize;
-

@@ -1,0 +1,11 @@
+extends ../layout
+
+block content 
+    h1 Lista de usuarios
+    if error 
+        h2 No se han podido encontrar los datos
+    else if eventos
+        ul 
+            each evento in eventos
+                li
+                    a(href=`/eventos/${evento.id_evento}`)= evento.nombre +', '+ evento.fecha

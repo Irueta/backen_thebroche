@@ -1,0 +1,11 @@
+extends ../layout
+
+block content 
+    h1 Lista de grupos
+    if error 
+        h2 No se han podido encontrar los datos
+    else if grupos
+        ul 
+            each grupo in grupos
+                li
+                    a(href=`/grupos/${grupo.id_grupo}`)= grupo.nombre

@@ -1,0 +1,13 @@
+extends ../layout
+
+block content 
+    h1 Datos del grupo
+        ul 
+                li= 'Nombre: '+ grupo.nombre
+                    ul
+                        li
+                            a(href='/grupos/'+ grupo.id_grupo + '/users')= "Usuarios"
+                li= 'Eventos:'
+                    ul 
+                        li 
+                            a(href='/grupos/'+ grupo.id_grupo + '/evento.id_evento')= "Evento 1"

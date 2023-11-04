@@ -1,0 +1,11 @@
+extends ../layout
+
+block content 
+    h1 Datos del evento
+        ul 
+                li= 'Nombre: '+ evento.nombre
+                    ul
+                        li= 'Participante(s): '
+                li= 'Descripción:'
+                    ul
+                        li=evento.descripcion

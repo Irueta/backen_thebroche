@@ -1,0 +1,11 @@
+extends ../layout
+
+block content 
+    h1 Lista de usuarios
+    if error 
+        h2 No se han podido encontrar los datos
+    else if users
+        ul 
+            each user in users
+                li
+                    a(href=`/users/${user.id_usuario}`)= user.nombre +', '+ user.primer_apellido+', '+ user.segundo_apellido+', '+ user.email
