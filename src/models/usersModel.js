@@ -1,7 +1,8 @@
-import { DataTypes, HasMany } from "sequelize";
+import { DataTypes, Model} from "sequelize";
 
 import sequelize from "../config/sequelize.js";
-
+import gruposModel from "./gruposModel.js";
+import participantesModel from "./participantesModel.js";
 
 const usersModel = sequelize.define("usuarios", 
 {
@@ -38,6 +39,7 @@ const usersModel = sequelize.define("usuarios",
     }
     }
 );
+
 
 
 

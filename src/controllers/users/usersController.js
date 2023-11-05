@@ -10,12 +10,28 @@ import {Op} from "sequelize";
     }
 } */
 
-const getAll = async(q=null) => {
+const getAll = async() => {
+    try{
+        const usuarios = await usersModel.findAll({
+            
+            where: {
+                id_grupo: '1',
+              },
+        }
+        );
+        console.log(usuarios);
+        return usuarios;
+    }catch(e){
+        return [e.message,null];
+    }; 
+}
+
+/* const getAll = async(q=null) => {
     
-    /* const options = {};
+    const options = {};
     if(q) {
         options.where = { nombre:"Admin",}
-    } */
+    } 
     try{
         const usuarios = await usersModel.findAll();
         console.log(usuarios);
@@ -23,7 +39,7 @@ const getAll = async(q=null) => {
     }catch(e){
         return [e.message,null];
     }; 
-}
+} */
 
 const getById = async (id) => {
     try {

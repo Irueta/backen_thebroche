@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 
 import sequelize from "../config/sequelize.js";
-
+import usersModel from "./usersModel.js";
 
 const gruposModel = sequelize.define("grupos", 
 {
@@ -23,6 +23,13 @@ const gruposModel = sequelize.define("grupos",
 );
 
 
+
+/* 
+gruposModel.belongsToMany(usersModel, {
+    through: "participantes", 
+    foreignKey:'id_grupo',
+    otherKey:'id_usuario'
+}); */
 
   
 export default gruposModel;
