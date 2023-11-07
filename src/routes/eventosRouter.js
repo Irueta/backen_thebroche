@@ -12,8 +12,8 @@ router.get("/",async (req,res)=>{
 router.get("/:id",async (req,res)=>{
     const id= req.params.id
     const evento= await eventosController.getById(id);
-    /* res.json(eventos) */
-    res.render("eventos/show", {evento})
+    res.json(eventos)
+    /* res.render("eventos/show", {evento}) */
 });
 
 export default router;

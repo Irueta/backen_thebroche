@@ -1,8 +1,9 @@
 import { DataTypes, Model} from "sequelize";
 
 import sequelize from "../config/sequelize.js";
-import gruposModel from "./gruposModel.js";
 import participantesModel from "./participantesModel.js";
+import liantesModel from "./liantesModel.js";
+import gruposModel from "./gruposModel.js";
 
 const usersModel = sequelize.define("usuarios", 
 {
@@ -40,8 +41,22 @@ const usersModel = sequelize.define("usuarios",
     }
 );
 
+liantesModel.belongsTo(usersModel, {
+    foreignKey: "id_usuario",
+    as: 'liante'
+});
+participantesModel.belongsTo(usersModel, {
+    foreignKey: "id_usuario",
+    as: 'participante'
+});
 
 
+usersModel.hasMany(liantesModel, { foreignKey: "id_usuario" });
+usersModel.hasMany(participantesModel, { foreignKey: "id_usuario" });
+
+//HAU ZALANTZA
+/* usersModel.belongsToMany(gruposModel, {through:"participantesModel"});
+ */
 
 
 export default usersModel;

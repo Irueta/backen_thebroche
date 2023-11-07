@@ -1,5 +1,9 @@
 import gruposModel from "../../models/gruposModel.js";
-import {Op} from "sequelize";
+import usuariosModel from "../../models/usersModel.js";
+import participantesModel from "../../models/participantesModel.js";
+import {Sequelize} from "sequelize";
+import { QueryTypes } from 'sequelize';
+import usersModel from "../../models/usersModel.js";
 
 
 const getAll = async(q=null) => {
@@ -16,6 +20,36 @@ const getAll = async(q=null) => {
     }; 
 }
 
+const getByUser = async function obtenerGruposDeUsuario() {
+    const id = 3;
+    try {
+      const result = await gruposModel.findAll({
+        attributes: ['nombre'],
+        include: [
+          {
+            model: participantesModel,
+            where: {
+              id_usuario: id
+            },
+            include: [
+              {
+                model: usuariosModel,
+                where: {
+                  id_usuario: id
+                }
+              }
+            ]
+          }
+        ]
+      });
+  
+      console.log(result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+
 const getById = async (id) => {
     try {
         const grupos = await gruposModel.findByPk(id);
@@ -26,14 +60,15 @@ const getById = async (id) => {
     }
 }
 
-const create = async (tipo, peso) => {
-    if (tipo === undefined || peso === undefined) {
-        const error = "Tipo y peso deben ser definidos";
+const create = async (nombre) => {
+    const admin = 2;
+    if (nombre === undefined) {
+        const error = "Debes introducir un nombre";
         return [error, null];
     }
     try {
-        const aceituna = await aceitunasModel.create({tipo,peso});
-        return [null, aceituna];
+        const grupo = await gruposModel.create({nombre,id_admin:admin});
+        return [null, grupo];
     }
     catch (e) {
         return [e.message, null];
@@ -86,6 +121,7 @@ const remove = async (id) => {
 
 export default {
     getAll,
+    getByUser,
     getById,
     create,
     update,

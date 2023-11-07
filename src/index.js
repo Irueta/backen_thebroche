@@ -2,11 +2,20 @@ import express from "express";
 import dotenv from "dotenv";
 import router from "./routes/router.js";
 import {Sequelize} from "sequelize";
+import session from "express-session";
 
 dotenv.config();
 const app = express();
 
-
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave:false,
+    saveUninitialized:false,
+    cookie: {
+        secure:false,
+        maxAge: 1000 * 60 * 20
+    }
+}))
 app.set('views', './src/views');
 app.set('view engine', 'pug');
 
@@ -19,6 +28,7 @@ app.get("/",(req,res)=>{
 
 app.use("/",router);
 
-app.listen(3005,()=>{
-    console.log("servidor en marcha en el puerto 3005");
+
+app.listen(3007,()=>{
+    console.log("servidor en marcha en el puerto 3007");
 });

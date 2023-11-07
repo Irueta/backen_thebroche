@@ -17,5 +17,4 @@ const liantesModel = sequelize.define("liantes",
 );
 
 
-  
 export default liantesModel;

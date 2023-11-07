@@ -9,5 +9,6 @@ block content
                             a(href='/grupos/'+ grupo.id_grupo + '/users')= "Usuarios"
                 li= 'Eventos:'
                     ul 
-                        li 
-                            a(href='/grupos/'+ grupo.id_grupo + '/evento.id_evento')= "Evento 1"
+                        each evento in eventos
+                            li
+                                a(href=`/eventos/${evento.id_evento}`)= evento.nombre

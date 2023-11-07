@@ -1,5 +1,6 @@
-import { DataTypes, BelongsToMany } from "sequelize";
+import { DataTypes } from "sequelize";
 import sequelize from "../config/sequelize.js";
+import liantesModel from "./liantesModel.js";
 
 
 const eventosModel = sequelize.define("eventos", 
@@ -29,10 +30,15 @@ const eventosModel = sequelize.define("eventos",
     }
 );
 
-/* eventosModel.belongsToMany(usuariosModel, {
-    through: 'Liantes',
-    foreignKey: 'id_evento',
-    otherKey: 'id_usuario',
-  }); */
+
+liantesModel.belongsTo(eventosModel, {
+    foreignKey: "id_evento",
+    as: 'liada'
+});
+
+
+
+eventosModel.hasMany(liantesModel, { foreignKey: "id_evento" });
+
 
 export default eventosModel;

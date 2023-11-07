@@ -3,6 +3,7 @@ import { DataTypes } from "sequelize";
 import sequelize from "../config/sequelize.js";
 
 
+
 const participantesModel = sequelize.define("participantes", 
 {
     id_usuario:{
@@ -17,5 +18,4 @@ const participantesModel = sequelize.define("participantes",
 );
 
 
-  
 export default participantesModel;
