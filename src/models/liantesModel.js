@@ -7,11 +7,13 @@ const liantesModel = sequelize.define("liantes",
 {
     id_usuario:{
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
     },
     id_evento:{
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
     }
     }
 );

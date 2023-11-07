@@ -3,7 +3,7 @@ import usuariosModel from "../../models/usersModel.js";
 import participantesModel from "../../models/participantesModel.js";
 import {Sequelize} from "sequelize";
 import { QueryTypes } from 'sequelize';
-import usersModel from "../../models/usersModel.js";
+import eventosModel from "../../models/eventosModel.js";
 
 
 const getAll = async(q=null) => {
@@ -21,37 +21,55 @@ const getAll = async(q=null) => {
 }
 
 
-
-
-
-
-
 const getByUser = async function obtenerGruposDeUsuario() {
     const id = 3;
+    
     try {
-      const result = await gruposModel.findAll({
-        attributes: ['nombre'],
+        
+      const grupos = await gruposModel.findAll({
+        attributes: ['id_grupo'],
         include: [
           {
             model: participantesModel,
+            attributes: [],
             where: {
               id_usuario: id
             },
+          }
+        ]
+      });
+      const gruposIds = grupos.map(grupo => grupo.id_grupo);
+      
+      const result = await gruposModel.findAll({
+        attributes: ['nombre'],
+        where:{
+            id_grupo:{
+                [Sequelize.Op.in]: gruposIds
+            }
+        },
+        include: [
+          {
+            model: participantesModel,
+            
             include: [
               {
                 model: usuariosModel,
-                where: {
-                  id_usuario: id
-                }
+                as: 'participante',
               }
             ]
+          },
+          {
+            model: eventosModel,
+            as: "eventos"
           }
         ]
       });
   
       console.log(result);
+      return result;
     } catch (error) {
       console.error('Error:', error);
+      return null;
     }
   }
 

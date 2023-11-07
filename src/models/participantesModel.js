@@ -8,11 +8,13 @@ const participantesModel = sequelize.define("participantes",
 {
     id_usuario:{
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
     },
     id_grupo:{
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
     }
     }
 );
