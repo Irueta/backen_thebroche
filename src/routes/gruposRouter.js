@@ -27,6 +27,7 @@ router.get("/:id",async (req,res)=>{
     const eventos=await eventosController.getByIdGrupo(id);
     const usuarios=await usersController.getByIdGrupo(id);
     console.log(eventos,usuarios);
+    console.log(req.session.user)
     res.json({grupo,eventos,usuarios})
     /* res.render("grupos/show", {grupo,eventos}) */
 });

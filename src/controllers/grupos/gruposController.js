@@ -20,6 +20,12 @@ const getAll = async(q=null) => {
     }; 
 }
 
+
+
+
+
+
+
 const getByUser = async function obtenerGruposDeUsuario() {
     const id = 3;
     try {

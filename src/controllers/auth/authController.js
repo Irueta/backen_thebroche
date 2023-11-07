@@ -94,6 +94,24 @@ const logout = (req,res)=>{
     req.session.destroy();
     res.redirect("/login");
 }
+const isAdmin = async (req,res,next) =>{
+    try{
+        if(req.session.user && req.session.user.role === 1){
+            next();
+        }else{
+            const errorUri = encodeURIComponent("credenciales incorrectas");
+            return res.redirect("/login?error="+errorUri);
+        }
+    }catch(e){
+        console.log(e)
+        const errorUri = encodeURIComponent("credenciales incorrectas");
+        return res.redirect("/login?error="+errorUri);
+    }
+
+    }
+
+
+
 
 export default{
     login,
@@ -101,6 +119,7 @@ export default{
     logout,
     register,
     registerForm,
+    isAdmin
 }
 
 

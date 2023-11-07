@@ -1,9 +1,9 @@
 import gruposModel from "../../models/gruposModel.js";
 import participantesModel from "../../models/participantesModel.js";
-import usuariosModel from "../../models/usersModel.js";
+import usersModel from "../../models/usersModel.js";
 import {Op} from "sequelize";
 
-const getAll = async(q=null) => {
+const getAll = async() => {
     try{
         const users = await usersModel.findAll();
         /* return [null, users]; */
