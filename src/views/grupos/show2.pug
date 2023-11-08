@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+    ul 
+        each participante in participantes
+            li= participante.participante.nombre
+
+    ul 
+        each evento in eventos
+            li= evento.nombre

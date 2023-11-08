@@ -5,8 +5,9 @@ block content
         ul 
                 li= 'Nombre: '+ grupo.nombre
                     ul
-                        li
-                            a(href='/grupos/'+ grupo.id_grupo + '/users')= "Usuarios"
+                        each user in users
+                            li
+                                a(href=`/users/${user.id_usuario}`)= user.nombre +', '+ user.primer_apellido+', '+ user.segundo_apellido+', '+ user.email
                 li= 'Eventos:'
                     ul 
                         each evento in eventos

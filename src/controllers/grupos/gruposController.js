@@ -54,6 +54,7 @@ const getByUser = async function obtenerGruposDeUsuario() {
             include: [
               {
                 model: usuariosModel,
+                attributes: ['nombre','email'],
                 as: 'participante',
               }
             ]
@@ -84,20 +85,46 @@ const getById = async (id) => {
     }
 }
 
-const create = async (nombre) => {
-    const admin = 2;
-    if (nombre === undefined) {
-        const error = "Debes introducir un nombre";
-        return [error, null];
-    }
-    try {
-        const grupo = await gruposModel.create({nombre,id_admin:admin});
-        return [null, grupo];
-    }
-    catch (e) {
-        return [e.message, null];
-    }
+const create = async (req,res) => {
+  const nombre = req.body.nombre;
+  const idAdmin = req.session.user.id;
+console.log(req.body)
+console.log(req.session.user.id)
+  if(!nombre){
+      const errorUri = encodeURIComponent("Introduce un nombre valido");
+      return res.redirect("/grupos/myGroups?error=" + errorUri);
+  }
+
+  try{
+      const oldGroup = await gruposModel.findOne({
+          where:{
+              nombre:nombre
+          }
+      });
+
+      if(oldGroup){
+          console.log("oldGroup:",oldGroup);
+          const errorUri = encodeURIComponent("El grupo ya existe");
+          return res.redirect("/grupos/myGroups?error=" + errorUri);
+      }
+    
+      const newGroup = await gruposModel.create({
+          nombre:nombre,
+          id_admin:idAdmin
+      });
+
+      res.redirect("/login");
+  }
+  catch(e){
+      const errorUri= encodeURIComponent(e.message);
+      return res.redirect("/grupos/myGroups?error=" + errorUri);
+  }    
 }
+const createForm = (req,res) => {
+  const errorMessage = req.query.error
+  res.render("grupos/create",{error:errorMessage});
+}
+
 
 const update = async(id,tipo,peso) => {
     
@@ -149,5 +176,6 @@ export default {
     getById,
     create,
     update,
-    remove
+    remove,
+    createForm
 };

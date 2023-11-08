@@ -4,7 +4,7 @@ import authController from "../controllers/auth/authController.js"
 const router = Router();
 
 
-router.get("/",authController.isAdmin,async (req,res)=>{
+router.get("/",async (req,res)=>{
     const users = await usersController.getAll(req,res);
     res.render("users/list", {users})
    /* res.json(users) */

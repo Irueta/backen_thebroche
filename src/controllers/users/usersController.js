@@ -17,7 +17,7 @@ const getAll = async() => {
 const getByIdGrupo = async (id) => {
     const idGrupo = id;
     try {
-        const usuarios = await usuariosModel.findAll({
+        const usuarios = await usersModel.findAll({
           attributes: ['nombre', 'primer_apellido', 'segundo_apellido', 'email'],
           include:[
               {

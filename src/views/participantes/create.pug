@@ -1,0 +1,11 @@
+extends ../layout
+
+block content 
+    h1 Añadir participante
+    if error 
+        p(class="error")= error
+    form(action="/grupos/myGroups/participante/new", method="post") 
+        label(for="email") Email 
+        input(type="text", name="email", id="email")
+        input(type="submit", value="send")
+    a(href="/grupos/myGroups") Volver a mis grupos

@@ -1,0 +1,11 @@
+extends ../layout
+
+block content 
+    h1 Crear Grupo 
+    if error 
+        p(class="error")= error
+    form(action="/grupos/myGroups/new", method="post") 
+        label(for="nombre") Nombre 
+        input(type="text", name="nombre", id="nombre")
+        input(type="submit", value="send")
+    a(href="/myGroups") Volver a mis grupos

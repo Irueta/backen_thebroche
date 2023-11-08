@@ -9,14 +9,7 @@ const login = async(req,res) => {
         if(!user){
             throw new Error("credenciales incorrectas");
         }
-        const hash = user.password;
-        console.log("Hash del usuario:", hash);
-        console.log(user.email);
-        console.log(user.role);
-        console.log(user.id_usuario);
-        console.log(user.password);
-        console.log(await bcrypt.compare(password,hash));
-            
+        const hash = user.password;    
         if(await bcrypt.compare(password,hash)){
             req.session.user = {
                 email: user.email,
@@ -110,6 +103,21 @@ const isAdmin = async (req,res,next) =>{
 
     }
 
+const isLogin = async (req,res,next) =>{
+    try{
+        if(req.session.user){
+            next();
+        }else{
+            const errorUri = encodeURIComponent("Debes logearte");
+            return res.redirect("/login?error="+errorUri);
+        }
+    }catch(e){
+        console.log(e)
+        const errorUri = encodeURIComponent("Debes logearte");
+        return res.redirect("/login?error="+errorUri);
+    }
+
+    }
 
 
 
@@ -119,7 +127,8 @@ export default{
     logout,
     register,
     registerForm,
-    isAdmin
+    isAdmin,
+    isLogin
 }
 
 
