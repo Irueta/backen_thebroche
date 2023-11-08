@@ -51,7 +51,7 @@ participantesModel.belongsTo(usersModel, {
 });
 
 
-usersModel.hasMany(liantesModel, { foreignKey: "id_usuario" });
+usersModel.hasMany(liantesModel, { foreignKey: "id_usuario", as:"liantes"});
 usersModel.hasMany(participantesModel, { foreignKey: "id_usuario" });
 
 //HAU ZALANTZA

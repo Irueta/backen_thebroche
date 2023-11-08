@@ -3,6 +3,7 @@ import gruposController from "../controllers/grupos/gruposController.js";
 import authController from "../controllers/auth/authController.js";
 import usersController from "../controllers/users/usersController.js";
 import eventosController from "../controllers/eventos/eventosController.js";
+import session from "express-session";
 const router = Router();
 
 
@@ -16,9 +17,10 @@ router.get("/myGroups",async (req,res)=>{
     const grupos = await gruposController.getByUser(req,res);
     const participantes = grupos[0].participantes;
     const eventos = grupos[0].eventos;
+    const grupo = grupos[0].nombre;
     /* res.send({participantes,eventos}) */
-    res.render("grupos/show2", {participantes,eventos})
-    /* res.json(participantes,eventos) */
+    res.render("grupos/show2", {participantes,eventos,grupo})
+    /* res.json({participantes,eventos,grupo}) */
 });
 
 router.get("/myGroups/new",(req,res)=>{

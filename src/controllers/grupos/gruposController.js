@@ -21,8 +21,8 @@ const getAll = async(q=null) => {
 }
 
 
-const getByUser = async function obtenerGruposDeUsuario() {
-    const id = 3;
+const getByUser = async function obtenerGruposDeUsuario(req,res) {
+    const id = req.session.user.id;
     
     try {
         

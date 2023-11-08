@@ -1,10 +1,15 @@
 extends ../layout
 
 block content
-    ul 
-        each participante in participantes
-            li= participante.participante.nombre
+    h1=grupo
+    h2 Participantes
+        ul 
+            each participante in participantes
+                li
+                    a(href=`/users/${participante.id_usuario}`)= participante.participante.nombre
 
-    ul 
-        each evento in eventos
-            li= evento.nombre
+    h2 Eventos
+        ul 
+            each evento in eventos
+                li
+                    a(href=`/eventos/${evento.id_evento}`)= evento.nombre +', '+ evento.fecha

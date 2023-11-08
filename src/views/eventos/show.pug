@@ -3,9 +3,12 @@ extends ../layout
 block content 
     h1 Datos del evento
         ul 
-                li= 'Nombre: '+ evento.nombre
-                    ul
-                        li= 'Participante(s): '
-                li= 'Descripción:'
-                    ul
-                        li=evento.descripcion
+            li=eventoYUsuarios.evento.nombre
+                ul
+                    li= 'Participante(s): '
+                        ul
+                            each usuario in eventoYUsuarios.usuarios
+                                li=usuario.nombre +', '+ usuario.primer_apellido
+            li= 'Descripción:'
+                ul
+                    li=eventoYUsuarios.evento.descripcion
