@@ -15,20 +15,26 @@ router.get("/",async (req,res)=>{
 });
 
 router.get("/myGroups",async (req,res)=>{
-    const grupos = await gruposController.getByUser();
-    const participantes = grupos[0].participantes;
-    const eventos = grupos[0].eventos;
-    const grupo = grupos[0].nombre; 
-    /* res.send({participantes,eventos}) */
-    res.render("grupos/show2", {participantes,eventos,grupo})
-    /* res.json({participantes,eventos,grupo}) */
+        const grupos = await gruposController.getByUser(req,res);
+        const ranking = await liantesController.getAll(req,res);
+        if(grupos.length!==0){
+            /* res.json({grupos,ranking})
+            console.log(grupos[0].participantes[0].id_grupo) */
+            res.render("grupos/show2", {grupos,ranking})
+        }else{
+            res.redirect("./create")
+        }
 });
 
-/* router.get("/myGroups",async (req,res)=>{
-    const grupos = await gruposController.getByUser();
-    res.render("grupos/show1", {grupos})
-    res.json({grupos})
-}); */
+router.get("/myGroups/:id",async (req,res)=>{
+    const grupos = await gruposController.getByUser(req,res);
+    if(grupos.length!==0){
+        res.json({grupos})
+        /* res.render("grupos/show2", {grupos}) */
+    }else{
+        res.redirect("./create")
+    }
+});
 
 router.get("/create",(req,res)=>{
     gruposController.createForm(req,res);
@@ -47,10 +53,10 @@ router.post("/myGroups/new",(req,res)=>{
 router.get("/:id",async (req,res)=>{
     const id= req.params.id
     const grupo= await gruposController.getById(id);
-    const datos = await gruposController.getByUser()
-    const ranking = await liantesController.getAll()
+    const ranking = await liantesController.getAll(req,res);
+    console.log("RANKING",ranking)
     /* res.render("grupos/show", {grupo,datos,ranking}) */
-    res.json({grupo,datos,ranking})
+    res.json({grupo,ranking})
 });
 
 

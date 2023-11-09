@@ -12,10 +12,13 @@ router.get("/",async (req,res)=>{
 router.get("/:id",async (req,res)=>{
     const id= req.params.id
     const eventoYUsuarios= await eventosController.getById(id);
-    /* res.json(eventoYUsuarios) */
-    res.render("eventos/show", {eventoYUsuarios,ranking})
+    /* res.json({eventoYUsuarios}) */
+    res.render("eventos/show", {eventoYUsuarios})
 });
 
+router.post("/grupos/myGroups/eventos/new",async(req,res)=>{
+    eventosController.create(req,res)
+})
 
 
 

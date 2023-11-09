@@ -16,6 +16,9 @@ const login = async(req,res) => {
                 role: user.role,
                 id:user.id_usuario
             }
+            console.log("Este es en PUTO ID",req.session.user.id)
+            console.log(req.session.user.role)
+            console.log(req.session.user.email)
             res.redirect("/grupos/myGroups");
         }else{
             throw new Error();
@@ -27,9 +30,6 @@ const login = async(req,res) => {
         return res.redirect("/login?error="+errorUri);
     }
 }
-/* console.log(req.session.user.id)
-console.log(req.session.user.role)
-console.log(req.session.user.email) */
 
 const loginForm = (req,res) => {
     const errorMessage = req.query.error

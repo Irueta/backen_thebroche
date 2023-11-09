@@ -68,37 +68,29 @@ const createForm = (req,res) => {
     }
 
 const create = async (req,res) => {
+    const id=req.session.user.id;
+    const grupo = req.body.grupo;
     const nombre = req.body.nombre;
     const descripcion = req.body.descripcion;
     const fecha = req.body.fecha;
-    const grupo = req.body.grupo;
-
-    console.log(req.body)
-    console.log(req.session.user.id)
-    if(!nombre){
-        const errorUri = encodeURIComponent("Introduce un nombre valido");
+    if(!nombre || !grupo || !descripcion || !fecha){
+        const errorUri = encodeURIComponent("Introduce todos los datos");
         return res.redirect("/grupos/myGroups?error=" + errorUri);
     }
     
     try{
-        const oldGroup = await gruposModel.findOne({
-            where:{
-                nombre:nombre
-            }
-        });
-    
-        if(oldGroup){
-            console.log("oldGroup:",oldGroup);
-            const errorUri = encodeURIComponent("El grupo ya existe");
-            return res.redirect("/grupos/myGroups?error=" + errorUri);
-        }
-        
-        const newGroup = await gruposModel.create({
+        const newEvento = await eventosModel.create({
+            id_grupo:grupo,
             nombre:nombre,
-            id_admin:idAdmin
+            descripcion:descripcion,
+            fecha:fecha
+
         });
-    
-        res.redirect("/login");
+        const newParticipante = await participantesModel.create({
+            id_evento:newEvento.id_grupo,
+            id_usuario:id
+        })
+        res.redirect("/grupos/myGroups")
     }
     catch(e){
         const errorUri= encodeURIComponent(e.message);

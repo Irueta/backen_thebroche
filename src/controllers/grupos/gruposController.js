@@ -23,59 +23,62 @@ const getAll = async(req,res) => {
 }
 
 
-const getByUser = async function obtenerGruposDeUsuario() {
-  const id = 5;
-    console.log(id)
-    try {
-      const grupos = await gruposModel.findAll({
-        attributes: ['id_grupo'],
-        include: [
-          {
-            model: participantesModel,
-            attributes: [],
-            where: {
-              id_usuario: id
-            },
-          }
-        ]
-      });
-     
-
-        const gruposIds = grupos.map(grupo => grupo.id_grupo);
-        
-        const result = await gruposModel.findAll({
-          attributes: ['nombre'],
-          where:{
-              id_grupo:{
-                  [Sequelize.Op.in]: gruposIds
-              }
-          },
+const getByUser = async function obtenerGruposDeUsuario(req,res) {
+  if(req.session.user.id){
+    const id = req.session.user.id;
+      console.log(id)
+      try {
+        const grupos = await gruposModel.findAll({
+          attributes: ['id_grupo'],
           include: [
             {
               model: participantesModel,
-              
-              include: [
-                {
-                  model: usuariosModel,
-                  attributes: ['nombre','email'],
-                  as: 'participante',
-                }
-              ]
-            },
-            {
-              model: eventosModel,
-              as: "eventos"
+              attributes: [],
+              where: {
+                id_usuario: id
+              },
             }
           ]
-        })
-      
-  
-      console.log(result);
-      return result;
-    } catch (error) {
-      console.error('Error:', error);
-      return null;
-    }
+        });
+
+          const gruposIds = grupos.map(grupo => grupo.id_grupo);
+          
+          const result = await gruposModel.findAll({
+            attributes: ['nombre'],
+            where:{
+                id_grupo:{
+                    [Sequelize.Op.in]: gruposIds
+                }
+            },
+            include: [
+              {
+                model: participantesModel,
+                
+                include: [
+                  {
+                    model: usuariosModel,
+                    attributes: ['nombre','email'],
+                    as: 'participante',
+                  }
+                ]
+              },
+              {
+                model: eventosModel,
+                as: "eventos"
+              }
+            ]
+          })
+        
+          if(result!==undefined || result !==null){
+            return result;
+          }
+      } catch (error) {
+        console.error('Error:', error);
+        return null;
+      }
+  }else{
+    res.redirect("/login")
+  }
   }
  
 
@@ -115,9 +118,13 @@ console.log(req.session.user.id)
       const newGroup = await gruposModel.create({
           nombre:nombre,
           id_admin:idAdmin
-      });
-
-      res.redirect("/login");
+        });
+        
+        const newParticipante = await participantesModel.create({
+          id_grupo:newGroup.id_grupo,
+          id_usuario:idAdmin
+    });
+      res.redirect("/grupos/myGroups");
   }
   catch(e){
       const errorUri= encodeURIComponent(e.message);
@@ -130,48 +137,7 @@ const createForm = (req,res) => {
 }
 
 
-const update = async(id,tipo,peso) => {
-    
-    if(id == undefined){
-        const error = "Tienes que especificar un ID válido";
-        return [error,null];
-    }
-    if (tipo === undefined || peso === undefined) {
-        const error = "Tipo y peso deben ser definidos";
-        return [error, null];
-    }
-    if (peso < 0 || peso > 255){
-        const error = "El peso debe estar entre 0 y 255 (incluidos)";
-        return [error,null];
-    }
-    try {
-        console.log("id",id);
-        const aceituna= await aceitunasModel.findByPk(id);
-        aceituna.tipo = tipo;
-        aceituna.peso = peso;
-        aceituna.save();
-        return [null,aceituna];
-    }
-    catch (e) {
-        console.log(e)
-        return [e.message,null];
-    }
-};
 
-const remove = async (id) => {
-    try {
-        const aceituna = await aceitunasModel.findByPk(id);
-        if(!aceituna){
-            const error = "No se ha encontrado ningún elemento con ese ID";
-            return[error,null];
-        }
-        aceituna.destroy();
-        return [null,aceituna];
-    }
-    catch (e) {
-        return [e.message,null];
-    }
-}
 
 
 export default {
@@ -179,7 +145,5 @@ export default {
     getByUser,
     getById,
     create,
-    update,
-    remove,
     createForm
 };
