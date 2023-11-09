@@ -6,14 +6,15 @@ import eventosRouter from "./eventosRouter.js"
 import adminRouter from "./adminRouter.js";
 import liantesRouter from "./liantesRouter.js";
 import authController from "../controllers/auth/authController.js";
-const router = Router();
+const router = express.Router({ mergeParams: true });
+import express from "express";
 
 /* router.use("/users",authController.isLogin,usersRouter);
 router.use("/",authRouter);
 router.use("/grupos",authController.isLogin,gruposRouter);
 router.use("/eventos",authController.isLogin,eventosRouter);
-router.use("/admin",authController.isAdmin,adminRouter); */
-
+router.use("/admin",authController.isAdmin,adminRouter);
+router.use("/eventos/:id/ranking",authController.isLogin,liantesRouter); */
 
 router.use("/users",usersRouter);
 router.use("/",authRouter);

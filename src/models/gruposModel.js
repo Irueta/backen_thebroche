@@ -25,7 +25,7 @@ const gruposModel = sequelize.define("grupos",
 
 eventosModel.belongsTo(gruposModel, {
     foreignKey: "id_grupo",
-    as: 'evento'
+    as: 'categoria'
 });
 participantesModel.belongsTo(gruposModel, {
     foreignKey: "id_grupo",

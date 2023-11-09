@@ -4,9 +4,11 @@ import participantesModel from "../../models/participantesModel.js";
 import {Sequelize} from "sequelize";
 import { QueryTypes } from 'sequelize';
 import eventosModel from "../../models/eventosModel.js";
+import session from "express-session";
+import authController from "../auth/authController.js";
 
 
-const getAll = async(q=null) => {
+const getAll = async(req,res) => {
     
     /* const options = {};
     if(q) {
@@ -21,11 +23,10 @@ const getAll = async(q=null) => {
 }
 
 
-const getByUser = async function obtenerGruposDeUsuario(req,res) {
-    const id = req.session.user.id;
-    
+const getByUser = async function obtenerGruposDeUsuario() {
+  const id = 5;
+    console.log(id)
     try {
-        
       const grupos = await gruposModel.findAll({
         attributes: ['id_grupo'],
         include: [
@@ -38,33 +39,36 @@ const getByUser = async function obtenerGruposDeUsuario(req,res) {
           }
         ]
       });
-      const gruposIds = grupos.map(grupo => grupo.id_grupo);
-      
-      const result = await gruposModel.findAll({
-        attributes: ['nombre'],
-        where:{
-            id_grupo:{
-                [Sequelize.Op.in]: gruposIds
-            }
-        },
-        include: [
-          {
-            model: participantesModel,
-            
-            include: [
-              {
-                model: usuariosModel,
-                attributes: ['nombre','email'],
-                as: 'participante',
+     
+
+        const gruposIds = grupos.map(grupo => grupo.id_grupo);
+        
+        const result = await gruposModel.findAll({
+          attributes: ['nombre'],
+          where:{
+              id_grupo:{
+                  [Sequelize.Op.in]: gruposIds
               }
-            ]
           },
-          {
-            model: eventosModel,
-            as: "eventos"
-          }
-        ]
-      });
+          include: [
+            {
+              model: participantesModel,
+              
+              include: [
+                {
+                  model: usuariosModel,
+                  attributes: ['nombre','email'],
+                  as: 'participante',
+                }
+              ]
+            },
+            {
+              model: eventosModel,
+              as: "eventos"
+            }
+          ]
+        })
+      
   
       console.log(result);
       return result;
@@ -73,7 +77,7 @@ const getByUser = async function obtenerGruposDeUsuario(req,res) {
       return null;
     }
   }
-
+ 
 
 const getById = async (id) => {
     try {

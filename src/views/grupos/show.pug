@@ -1,15 +1,24 @@
 extends ../layout
 
-block content 
-    h1 Datos del grupo
+block content
+    h1=grupo.id_grupo +'-' + grupo.nombre
+    h2 Participantes
         ul 
-                li= 'Nombre: '+ grupo.nombre
-                    ul
-                        each user in users
-                            li
-                                a(href=`/users/${user.id_usuario}`)= user.nombre +', '+ user.primer_apellido+', '+ user.segundo_apellido+', '+ user.email
-                li= 'Eventos:'
-                    ul 
-                        each evento in eventos
-                            li
-                                a(href=`/eventos/${evento.id_evento}`)= evento.nombre
+            each participante in datos[0].participantes
+                li
+                    a(href=`/users/${participante.id_usuario}`)= participante.participante.nombre
+
+    h2 Eventos
+        ul 
+            each evento in datos[0].eventos
+                li
+                    a(href=`/eventos/${evento.id_evento}`)= evento.nombre +', '+ evento.fecha 
+    
+    a(href="/grupos/create") Crear nuevo grupo
+    div
+        a(href="/grupos/myGroups/eventos/new") Crear nuevo evento
+
+    h2 Ranking 
+        ul 
+            each rank in ranking
+                li=rank.nombre + ' con ' + rank.liadas + ' liadas'

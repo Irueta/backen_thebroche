@@ -16,7 +16,7 @@ const login = async(req,res) => {
                 role: user.role,
                 id:user.id_usuario
             }
-            res.redirect("/");
+            res.redirect("/grupos/myGroups");
         }else{
             throw new Error();
         }   
@@ -26,8 +26,10 @@ const login = async(req,res) => {
         const errorUri = encodeURIComponent("credenciales incorrectas");
         return res.redirect("/login?error="+errorUri);
     }
-
 }
+/* console.log(req.session.user.id)
+console.log(req.session.user.role)
+console.log(req.session.user.email) */
 
 const loginForm = (req,res) => {
     const errorMessage = req.query.error

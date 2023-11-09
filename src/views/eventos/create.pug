@@ -1,11 +1,17 @@
 extends ../layout
 
 block content 
-    h1 Crear Grupo 
+    h1 Crear Evento 
     if error 
         p(class="error")= error
-    form(action="/grupos/myGroups/new", method="post") 
+    form(action="/grupos/myGroups/eventos/new", method="post") 
+        label(for="grupo") ID grupo 
+        input(type="text", name="grupo", id="grupo")
         label(for="nombre") Nombre 
         input(type="text", name="nombre", id="nombre")
+        label(for="descripcion") Descripcion 
+        input(type="text", name="descripcion", id="descripcion")
+        label(for="fecha") Fecha 
+        input(type="date", name="fecha", id="fecha")
         input(type="submit", value="send")
-    a(href="/myGroups") Volver a mis grupos
+    a(href="/grupos/myGroups") Volver a mis grupos

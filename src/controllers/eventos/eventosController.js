@@ -46,8 +46,6 @@ const getById = async (id) => {
 }
 
 
-
-
 const getByIdGrupo = async (id) => {
     const idGrupo = id;
     try {
@@ -64,8 +62,57 @@ const getByIdGrupo = async (id) => {
       }
     }
 
+const createForm = (req,res) => {
+    const errorMessage = req.query.error
+    res.render("eventos/create",{error:errorMessage});
+    }
+
+const create = async (req,res) => {
+    const nombre = req.body.nombre;
+    const descripcion = req.body.descripcion;
+    const fecha = req.body.fecha;
+    const grupo = req.body.grupo;
+
+    console.log(req.body)
+    console.log(req.session.user.id)
+    if(!nombre){
+        const errorUri = encodeURIComponent("Introduce un nombre valido");
+        return res.redirect("/grupos/myGroups?error=" + errorUri);
+    }
+    
+    try{
+        const oldGroup = await gruposModel.findOne({
+            where:{
+                nombre:nombre
+            }
+        });
+    
+        if(oldGroup){
+            console.log("oldGroup:",oldGroup);
+            const errorUri = encodeURIComponent("El grupo ya existe");
+            return res.redirect("/grupos/myGroups?error=" + errorUri);
+        }
+        
+        const newGroup = await gruposModel.create({
+            nombre:nombre,
+            id_admin:idAdmin
+        });
+    
+        res.redirect("/login");
+    }
+    catch(e){
+        const errorUri= encodeURIComponent(e.message);
+        return res.redirect("/grupos/myGroups?error=" + errorUri);
+    }    
+    }
+
 export default {
     getAll,
     getById,
-    getByIdGrupo
+    getByIdGrupo,
+    createForm,
+    create
 };
+
+
+  

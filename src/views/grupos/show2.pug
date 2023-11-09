@@ -1,7 +1,7 @@
 extends ../layout
 
 block content
-    h1=grupo
+    h1=participantes[0].id_grupo +'-' + grupo
     h2 Participantes
         ul 
             each participante in participantes
@@ -13,3 +13,11 @@ block content
             each evento in eventos
                 li
                     a(href=`/eventos/${evento.id_evento}`)= evento.nombre +', '+ evento.fecha
+    
+    a(href="/grupos/create") Crear nuevo grupo
+    div 
+        a(href="/grupos/myGroups/eventos/new") Crear nuevo evento
+
+    h2 Ranking
+
+    

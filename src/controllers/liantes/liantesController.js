@@ -1,57 +1,61 @@
 import eventosModel from "../../models/eventosModel.js";
 import gruposModel from "../../models/gruposModel.js";
 import liantesModel from "../../models/liantesModel.js";
-import  Sequelize from "sequelize";
+import  sequelize from "sequelize";
 import usersModel from "../../models/usersModel.js";
 
 const getAll = async(req,res) => {
-    const id = 3
+    const id = 4
     try{
-        const result = await gruposModel.findAll({
-            attributes: ['nombre'],
-            where:{
-                id_grupo:{
-                    [Sequelize.Op.in]: gruposIds
-                }
-            },
+        const ranking = await usersModel.findAll({
+            attributes: [
+              'nombre',
+              [sequelize.fn('count', sequelize.col('liantes.id_evento')), 'liadas']
+            ],
             include: [
               {
-                model: participantesModel,
-                
-                include: [
-                  {
-                    model: usuariosModel,
-                    attributes: ['nombre','email'],
-                    as: 'participante',
-                  }
-                ]
-              },
-              {
-                model: eventosModel,
-                as: "eventos"
+                model: liantesModel,
+                as:"liantes",
+                attributes: [],
+                include: {
+                  model: eventosModel,
+                  as:"liada",
+                  attributes: [],
+                  where: { id_grupo: id }
+                }
               }
-            ]
+            ],
+            group: ['usuarios.id_usuario'],
+            order: [
+              sequelize.literal('liadas DESC')
+            ],
           });
         return ranking;
     }catch(e){
         return [e.message,null];
     }
-}
+} 
 export default{
     getAll
 }
-/* const id = 3;
-const post = await gruposModel.findOne({
-    where: { id_grupo: id },
-    attributes: ["nombre", "title", "imageUrl", 
-    // you probably need to correct the table and fields names
-    [Sequelize.literal('(SELECT COUNT(*) FROM Likes where Likes.postId=Post.id)'), 'LikeCount']],
-    include: [{
-      model: User,
-      as: "Likers",
-      attributes: ["id"],
-      through: { attributes: [] },
-    }]
-  }) */
 
-  /* select usuarios.nombre , count(liantes.id_usuario) from usuarios join liantes on usuarios.id_usuario=liantes.id_usuario join eventos on eventos.id_evento=liantes.id_evento where eventos.id_grupo=1 group by usuarios.nombre; */
+/* const ranking = await usersModel.findAll({
+    attributes: [
+      'nombre',
+      [sequelize.fn('count', sequelize.col('liantes.id_evento')), 'count_id_evento']
+    ],
+    include: [
+      {
+        model: liantesModel,
+        as:"liantes",
+        attributes: [],
+        include: {
+          model: eventosModel,
+          as:"liada",
+          where: { id_grupo: id },
+          attributes: []
+        }
+      }
+    ],
+    group: ['usuarios.id_usuario']
+  }); */
