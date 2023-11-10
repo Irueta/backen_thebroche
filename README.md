@@ -17,6 +17,8 @@ Tabla de Contenidos
 Instalación
 
     Descarga el repositorio.
+    Lanza en docker compose con build o escribe este comando para hacerlo sin docker-compose:
+    Escribe en la terminal "docker run --name mysql_backend -p 3306:3306 -e MYSQL_ROOT_PASSWORD=1234 -d mysql" donde "mysql_backend" es el nombre que quieres darle al contenedor.
     Ejecuta npm install para instalar las dependencias.
     Crea un archivo .env utilizando .env.example.js como plantilla.
 
